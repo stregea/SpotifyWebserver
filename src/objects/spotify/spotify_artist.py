@@ -17,10 +17,10 @@ class SpotifyArtist:
         :param json_response: The response from the Spotify API.
         """
         # Known external URLs for this artist.
-        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response else None
+        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response and json_response['external_urls'] is not None else None
 
         # Information about the followers of the artist.
-        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response else None
+        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response and json_response['followers'] is not None else None
 
         # A list of the genres the artist is associated with. If not yet classified, the array is empty.
         self.genres: [str] = json_response['genres'] if 'genres' in json_response else []
@@ -32,7 +32,7 @@ class SpotifyArtist:
         self.id: str = json_response['id'] if 'id' in json_response else None
 
         # Images of the artist in various sizes, the widest first.
-        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response else None
+        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response and json_response['images'] is not None else None
 
         # The name of the artist.
         self.name: str = json_response['name'] if 'name' in json_response else None
@@ -53,4 +53,4 @@ class SpotifyArtist:
 
         # The artists of the album.
         # Each artist object includes a link in href to more detailed information about the artist.
-        self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response else []
+        self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response and json_response['artists'] is not None else []

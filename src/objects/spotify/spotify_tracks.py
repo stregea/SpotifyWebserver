@@ -13,7 +13,7 @@ class SpotifyTracks:
         self.href: str = json_response['href'] if 'href' in json_response else None
 
         # The requested content. Todo: find out structure of objects - may be a list of 'Track'
-        self.items: [object] = [item for item in json_response['items']] if 'items' in json_response else []
+        self.items: [object] = [item for item in json_response['items']] if 'items' in json_response  and json_response['items'] is not None else []
 
         # The maximum number of items in the response (as set in the query or by default).
         self.limit: int = json_response['limit'] if 'limit' in json_response else -1

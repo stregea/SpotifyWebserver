@@ -29,7 +29,7 @@ class SpotifyAlbum:
         self.available_markets: [str] = json_response['available_markets'] if 'available_markets' in json_response else []
 
         # Known external URLs for this album.
-        self.external_urls: [SpotifyExternalURLs] = [SpotifyExternalURLs(data) for data in json_response['external_urls']] if 'external_urls' in json_response else []
+        self.external_urls: [SpotifyExternalURLs] = [SpotifyExternalURLs(data) for data in json_response['external_urls']] if 'external_urls' in json_response and json_response['external_urls'] is not None else []
 
         # A link to the Web API endpoint providing full details of the album.
         self.href: str = json_response['href'] if 'href' in json_response else None
@@ -38,7 +38,7 @@ class SpotifyAlbum:
         self.id: str = json_response['id'] if 'id' in json_response else None
 
         # The name of the album. In case of an album takedown, the value may be an empty string.
-        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response else []
+        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response and json_response['images'] is not None else []
 
         # The name of the album. In case of an album takedown, the value may be an empty string.
         self.name: str = json_response['name'] if 'name' in json_response else None
@@ -50,7 +50,7 @@ class SpotifyAlbum:
         self.release_date_precision: str = json_response['release_date_precision'] if 'release_date_precision' in json_response else None
 
         # Included in the response when a content restriction is applied.
-        self.restrictions: SpotifyRestrictions = SpotifyRestrictions(json_response['restrictions']) if 'restrictions' in json_response else None
+        self.restrictions: SpotifyRestrictions = SpotifyRestrictions(json_response['restrictions']) if 'restrictions' in json_response and json_response['restrictions'] is not None else None
 
         # The object type.
         self.type: str = json_response['type'] if 'type' in json_response else None
@@ -60,7 +60,7 @@ class SpotifyAlbum:
 
         # The artists of the album.
         # Each artist object includes a link in href to more detailed information about the artist.
-        self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response else []
+        self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response and json_response['artists'] is not None else []
 
         # The tracks of the album.
-        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response else None
+        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response and json_response['tracks'] is not None else None

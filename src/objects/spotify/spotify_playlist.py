@@ -26,10 +26,10 @@ class SpotifyPlaylist:
         self.description: str = json_response['description'] if 'description' in json_response else None
 
         # Known external URLs for this playlist.
-        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response else None
+        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response and json_response['external_urls'] is not None else None
 
         # Information about the followers of the playlist.
-        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response else None
+        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response and json_response['followers'] is not None else None
 
         # A link to the Web API endpoint providing full details of the playlist.
         self.href: str = json_response['href'] if 'href' in json_response else None
@@ -41,13 +41,13 @@ class SpotifyPlaylist:
         # The images are returned by size in descending order.
         # See Working with Playlists (https://developer.spotify.com/documentation/general/guides/working-with-playlists/).
         # Note: If returned, the source URL for the image (url) is temporary and will expire in less than a day.
-        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response else []
+        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response and json_response['images'] is not None else []
 
         # The name of the playlist.
         self.name: str = json_response['name'] if 'name' in json_response else None
 
         # The user who owns the playlist
-        self.owner: SpotifyUser = SpotifyUser(json_response['owner']) if 'owner' in json_response else None
+        self.owner: SpotifyUser = SpotifyUser(json_response['owner']) if 'owner' in json_response and json_response['owner'] is not None else None
 
         # The playlist's public/private status: true the playlist is public, false the playlist is private,
         # null the playlist status is not relevant.
@@ -58,7 +58,7 @@ class SpotifyPlaylist:
         self.snapshot_id: str = json_response['snapshot_id'] if 'snapshot_id' in json_response else None
 
         # The tracks of the playlist.
-        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response else None
+        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response and json_response['tracks'] is not None else None
 
         # The object type: "playlist"
         self.type: str = json_response['type'] if 'type' in json_response else None

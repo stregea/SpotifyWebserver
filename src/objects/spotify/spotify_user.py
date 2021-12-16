@@ -27,7 +27,7 @@ class SpotifyUser:
 
         # The user's explicit content settings.
         # This field is only available when the current user has granted access to the user-read-private scope.
-        self.explicit_content: SpotifyExplicitContent = SpotifyExplicitContent(json_response['explicit_content']) if 'explicit_content' in json_response else None
+        self.explicit_content: SpotifyExplicitContent = SpotifyExplicitContent(json_response['explicit_content']) if 'explicit_content' in json_response and json_response['explicit_content'] is not None else None
 
         # The user's Spotify subscription level: "premium", "free", etc.
         # (The subscription level "open" can be considered the same as "free".)
@@ -40,10 +40,10 @@ class SpotifyUser:
         self.display_name: str = json_response['display_name'] if 'display_name' in json_response else None
 
         # Known external URLs for this user.
-        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response else None
+        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response and json_response['external_urls'] is not None else None
 
         # Information about the followers of the user.
-        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response else None
+        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response and json_response['followers'] is not None else None
 
         # A link to the Web API endpoint for this user.
         self.href: str = json_response['href'] if 'href' in json_response else None
@@ -52,10 +52,10 @@ class SpotifyUser:
         self.id: str = json_response['id'] if 'id' in json_response else None
 
         # The user's profile image.
-        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response else []
+        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response and json_response['images'] is not None else []
 
         # The object type: "user"
         self.type: str = json_response['type'] if 'type' in json_response else None
 
         # The Spotify URI for the user.
-        self.uri = json_response['uri'] if 'uri' in json_response else None
+        self.uri:str = json_response['uri'] if 'uri' in json_response else None
