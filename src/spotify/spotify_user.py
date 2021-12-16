@@ -1,3 +1,8 @@
+from spotify.spotify_external_urls import SpotifyExternalURLs
+from spotify.spotify_followers import SpotifyFollowers
+from spotify.spotify_image import SpotifyImage
+
+
 class SpotifyUser:
     """
     Class that will represent a signed-in user from the Spotify API.
@@ -16,11 +21,11 @@ class SpotifyUser:
 
         # General User Information
         self.display_name = json_response['display_name']
-        self.external_urls = json_response['external_urls']
-        self.followers = json_response['followers']
+        self.external_urls = SpotifyExternalURLs(json_response['external_urls'])
+        self.followers = SpotifyFollowers(json_response['followers'])
         self.href = json_response['href']
         self.id = json_response['id']
-        self.images = json_response['images']  # list of images.
+        self.images = [SpotifyImage(image) for image in json_response['images']]
         self.type = json_response['type']
         self.uri = json_response['uri']
 

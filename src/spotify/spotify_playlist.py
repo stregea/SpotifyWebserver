@@ -1,4 +1,5 @@
-from spotify_user import SpotifyUser
+from spotify.spotify_image import SpotifyImage
+from spotify.spotify_user import SpotifyUser
 
 
 class SpotifyPlaylist:
@@ -13,7 +14,7 @@ class SpotifyPlaylist:
         self.followers = json_response['external_urls']
         self.href = json_response['href']
         self.id = json_response['id']
-        self.images = json_response['images']
+        self.images = [SpotifyImage(image) for image in json_response['images']]
         self.name = json_response['name']
         self.owner = SpotifyUser(json_response['owner'])
         self.public = json_response['public']

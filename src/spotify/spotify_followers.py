@@ -2,6 +2,7 @@ class SpotifyFollowers:
     """
     This class contains information about the followers of the artist.
     """
+
     def __init__(self, info: dict):
         """
         Construct a SpotifyFollowers object.
