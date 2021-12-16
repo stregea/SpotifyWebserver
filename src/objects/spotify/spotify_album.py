@@ -25,6 +25,7 @@ class SpotifyAlbum:
         self.total_tracks: int = json_response['total_tracks'] if 'total_tracks' in json_response else -1
 
         # The markets in which the album is available: ISO 3166-1 alpha-2 country codes.
+        # https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
         # NOTE: an album is considered available in a market when at least 1 of its tracks is available in that market.
         self.available_markets: [str] = json_response['available_markets'] if 'available_markets' in json_response else []
 
@@ -52,7 +53,7 @@ class SpotifyAlbum:
         # Included in the response when a content restriction is applied.
         self.restrictions: SpotifyRestrictions = SpotifyRestrictions(json_response['restrictions']) if 'restrictions' in json_response and json_response['restrictions'] is not None else None
 
-        # The object type.
+        # The objects type.
         self.type: str = json_response['type'] if 'type' in json_response else None
 
         # The Spotify URI for the album.

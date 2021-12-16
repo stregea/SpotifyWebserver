@@ -58,4 +58,4 @@ class SpotifyUser:
         self.type: str = json_response['type'] if 'type' in json_response else None
 
         # The Spotify URI for the user.
-        self.uri:str = json_response['uri'] if 'uri' in json_response else None
+        self.uri: str = json_response['uri'] if 'uri' in json_response else None
