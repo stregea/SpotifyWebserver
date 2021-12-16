@@ -26,10 +26,10 @@ class SpotifyPlaylist:
         self.description: str = json_response['description'] if 'description' in json_response else None
 
         # Known external URLs for this playlist.
-        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls'])
+        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response else None
 
         # Information about the followers of the playlist.
-        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['external_urls'])
+        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response else None
 
         # A link to the Web API endpoint providing full details of the playlist.
         self.href: str = json_response['href'] if 'href' in json_response else None
@@ -47,7 +47,7 @@ class SpotifyPlaylist:
         self.name: str = json_response['name'] if 'name' in json_response else None
 
         # The user who owns the playlist
-        self.owner: SpotifyUser = SpotifyUser(json_response['owner'])
+        self.owner: SpotifyUser = SpotifyUser(json_response['owner']) if 'owner' in json_response else None
 
         # The playlist's public/private status: true the playlist is public, false the playlist is private,
         # null the playlist status is not relevant.
@@ -58,7 +58,7 @@ class SpotifyPlaylist:
         self.snapshot_id: str = json_response['snapshot_id'] if 'snapshot_id' in json_response else None
 
         # The tracks of the playlist.
-        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks'])
+        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response else None
 
         # The object type: "playlist"
         self.type: str = json_response['type'] if 'type' in json_response else None

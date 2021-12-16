@@ -50,7 +50,7 @@ class SpotifyAlbum:
         self.release_date_precision: str = json_response['release_date_precision'] if 'release_date_precision' in json_response else None
 
         # Included in the response when a content restriction is applied.
-        self.restrictions: SpotifyRestrictions = SpotifyRestrictions(json_response['restrictions'])
+        self.restrictions: SpotifyRestrictions = SpotifyRestrictions(json_response['restrictions']) if 'restrictions' in json_response else None
 
         # The object type.
         self.type: str = json_response['type'] if 'type' in json_response else None
@@ -63,4 +63,4 @@ class SpotifyAlbum:
         self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response else []
 
         # The tracks of the album.
-        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks'])
+        self.tracks: SpotifyTracks = SpotifyTracks(json_response['tracks']) if 'tracks' in json_response else None

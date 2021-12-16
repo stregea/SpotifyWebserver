@@ -13,14 +13,14 @@ class SpotifyArtist:
 
     def __init__(self, json_response: dict):
         """
-        Construct an Artist object from a response.
+        Construct an SpotifyArtist object from a response.
         :param json_response: The response from the Spotify API.
         """
         # Known external URLs for this artist.
-        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls'])
+        self.external_urls: SpotifyExternalURLs = SpotifyExternalURLs(json_response['external_urls']) if 'external_urls' in json_response else None
 
         # Information about the followers of the artist.
-        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers'])
+        self.followers: SpotifyFollowers = SpotifyFollowers(json_response['followers']) if 'followers' in json_response else None
 
         # A list of the genres the artist is associated with. If not yet classified, the array is empty.
         self.genres: [str] = json_response['genres'] if 'genres' in json_response else []
@@ -32,7 +32,7 @@ class SpotifyArtist:
         self.id: str = json_response['id'] if 'id' in json_response else None
 
         # Images of the artist in various sizes, the widest first.
-        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']]
+        self.images: [SpotifyImage] = [SpotifyImage(image) for image in json_response['images']] if 'images' in json_response else None
 
         # The name of the artist.
         self.name: str = json_response['name'] if 'name' in json_response else None
@@ -46,3 +46,11 @@ class SpotifyArtist:
 
         # The Spotify URI for the artist.
         self.uri: str = json_response['uri'] if 'uri' in json_response else None
+
+        # The field is present when getting an artist's albums.
+        # Compare to album_type this field represents relationship between the artist and the album.
+        self.album_group: str = json_response['album_group'] if 'album_group' in json_response else None
+
+        # The artists of the album.
+        # Each artist object includes a link in href to more detailed information about the artist.
+        self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response else []
