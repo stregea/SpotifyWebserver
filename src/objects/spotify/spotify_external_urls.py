@@ -5,7 +5,9 @@ class SpotifyExternalURLs:
 
     def __init__(self, info: dict):
         """
-        Construct a SpotifyExternalURLs object.
+        Known external URLs for an artist, playlist, etc.
         :param info: The information containing the SpotifyExternalURLs information.
         """
-        self.spotify = info['spotify']
+
+        # The Spotify URL for the object.
+        self.spotify: str = info['spotify'] if 'spotify' in info else None

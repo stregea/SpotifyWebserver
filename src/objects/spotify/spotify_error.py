@@ -16,4 +16,9 @@ class SpotifyError:
             }
         :param json_response: The json response from the Spotify API.
         """
-        self.error = json_response['error']
+
+        # The error response status. Default of 400.
+        self.status: int = json_response['status'] if 'status' in json_response else 400
+
+        # The error response message.
+        self.error: str = json_response['error'] if 'error' in json_response else None
