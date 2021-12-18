@@ -1,3 +1,5 @@
+import json
+
 from objects.spotify.spotify_external_urls import SpotifyExternalURLs
 from objects.spotify.spotify_followers import SpotifyFollowers
 from objects.spotify.spotify_image import SpotifyImage
@@ -37,3 +39,10 @@ class SpotifyUser:
 
         # The Spotify URI for the user.
         self.uri: str = json_response['uri'] if 'uri' in json_response else None
+
+    def to_json(self) -> str:
+        """
+        Convert this user to a JSON representation.
+        :return: A JSON representation of a user.
+        """
+        return json.dumps(self, default=lambda o: o.__dict__)

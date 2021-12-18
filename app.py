@@ -5,14 +5,16 @@ from flask import Flask, redirect, render_template, request
 import os
 import json
 from objects.spotify.spotify_user import SpotifyUser
-from objects.spotify.spotify_authorization_token import create_authorization_token
+from objects.spotify.spotify_current_user import SpotifyCurrentUser, get_current_user
+from objects.spotify.spotify_authorization_token import create_authorization_token, SpotifyAuthorizationToken
 
 # load in the client id and secret id.
 CLIENT_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-SPOTIFY_USERS: dict[str: SpotifyUser] = {}  # make user id and auth token?
+SPOTIFY_USERS: dict[str: [SpotifyUser, SpotifyAuthorizationToken]] = {}
 
 client_id = CLIENT_INFORMATION['client_id']
 client_secret = CLIENT_INFORMATION['client_secret']
@@ -26,7 +28,19 @@ def index():  # put application's code here
 
     # check to determine if the session user is currently in the dictionary of users.
     try:
-        SPOTIFY_USERS[flask.session['current_user_id']]
+        # Update the session users authentication token if it's expired.
+        if SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][1].is_expired():
+            SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][1].update_token(
+                client_id=client_id,
+                client_secret=client_secret
+            )
+
+        return render_template(
+            'index.html',
+            current_user=SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][0],
+            user_json=json.loads(flask.session['current_user']),
+            total_users=len(SPOTIFY_USERS)
+        )
     except KeyError:
         # If not, take user to sign-in page to get access to a code that will be used to request an access token.
         response_type = 'code'
@@ -36,16 +50,9 @@ def index():  # put application's code here
         redirect_uri = f'{spotify_url_authorize}client_id={client_id}&redirect_uri={encoded_redirect}&scope={scope}&response_type={response_type}&state={state}'
         return redirect(redirect_uri)
 
-    return CLIENT_INFORMATION
-
-
-# @app.route('/login')
-# def login():
-#     return render_template('login.html', client_information=CLIENT_INFORMATION)
-#
 
 @app.route('/callback/')
-def callback():
+def callback_for_login():
     # have user sign-in here, may need a call-back page to store the session user information here.
 
     # get the Authorization code from Spotify API
@@ -55,14 +62,20 @@ def callback():
     state = request.args.get('state')
 
     if code:
-        print("first call back")
-
-        # create access token
+        # Create access token.
         token = create_authorization_token(code, client_id, client_secret)
 
-        # need to assign token with user.
-        # redirect user to home page...
-        pass
+        # Create the current user.
+        current_user = get_current_user(token, client_id, client_secret)
+
+        # Set the current user as the session user
+        flask.session['current_user'] = current_user.to_json()
+
+        # Add user to the current dictionary of users.
+        SPOTIFY_USERS[current_user.id] = [current_user, token]
+
+        # redirect user to home page.
+        return redirect('/')
     elif error:
         # redirect to a sorry page?
         pass

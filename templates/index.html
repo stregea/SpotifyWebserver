@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <div>
+        <div>
+            <h1>Welcome, {{ current_user.display_name }}!</h1>
+            <br>
+            <img src="{{ current_user.images[0].url }}">
+        </div>
+        <br>
+        <div>
+            This is the json body of all your information:
+            <br>
+            <div>
+                {{ user_json }}
+            </div>
+        </div>
+        <br>
+        <div>
+            {{ total_users }} online.
+        </div>
+    </div>
+{% endblock %}

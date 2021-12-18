@@ -41,9 +41,16 @@ class SpotifyAuthorizationToken:
         Determine if this instance of the token is expired or not.
         :return: True if the current time is passed the expiration time, False otherwise.
         """
-        return time.time() >= self.__expiration_time
+        current_time = time.time()
+        return current_time >= self.__expiration_time
 
     def update_token(self, client_id: str, client_secret):
+        """
+        Update this object token.
+        :param client_id: The id of the client.
+        :param client_secret: The secret id of the client.
+        :return:
+        """
         b64_str = base64.b64encode(f'{client_id}:{client_secret}'.encode('utf-8'))
 
         # Build the JSON body that will be used for a POST request.
@@ -90,5 +97,4 @@ def create_authorization_token(code: str, client_id: str, client_secret) -> Spot
     # Perform a POST request to exchange the code for a token
     response = requests.post(TOKEN_URI, data=body, headers=headers)
 
-    # return a constructed SpotifyAuthorizationToken
     return SpotifyAuthorizationToken(json_response=response.json())
