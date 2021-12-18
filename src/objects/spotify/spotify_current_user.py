@@ -47,12 +47,12 @@ def get_current_user(token: SpotifyAuthorizationToken, client_id: str, client_se
     """
     # Check to see if we need to update the token
     if token.is_expired():
-        token.update_token(client_id=client_id, client_secret=client_secret)
+        token.refresh(client_id=client_id, client_secret=client_secret)
 
     # Build the JSON body for a GET request.
     url = 'https://api.spotify.com/v1/me'
     header = {
-        'Authorization': f'{token.token_type} {token.access_token}',
+        'Authorization': f'{token.get_token_type()} {token.get_access_token()}',
         'Content-type': 'application/json'
     }
     response = requests.get(url, headers=header)

@@ -3,9 +3,9 @@
 {% block body %}
     <div>
         <div>
-            <h1>Welcome, {{ current_user.display_name }}!</h1>
+            <h1>Welcome, {{ session_user.display_name }}!</h1>
             <br>
-            <img src="{{ current_user.images[0].url }}">
+            <img src="{{ session_user.images[0].url }}">
         </div>
         <br>
         <div>

@@ -28,16 +28,16 @@ def index():  # put application's code here
 
     # check to determine if the session user is currently in the dictionary of users.
     try:
-        # Update the session users authentication token if it's expired.
-        if SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][1].is_expired():
-            SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][1].update_token(
-                client_id=client_id,
-                client_secret=client_secret
-            )
+        # Get the current session_user's id.
+        session_user_id = json.loads(flask.session['current_user'])['id']
+
+        # Update the session user's authentication token if it's expired.
+        if SPOTIFY_USERS[session_user_id][1].is_expired():
+            SPOTIFY_USERS[session_user_id][1].refresh(client_id=client_id, client_secret=client_secret)
 
         return render_template(
             'index.html',
-            current_user=SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][0],
+            session_user=SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][0],
             user_json=json.loads(flask.session['current_user']),
             total_users=len(SPOTIFY_USERS)
         )
