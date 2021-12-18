@@ -3,9 +3,9 @@
 {% block body %}
     <div>
         <div>
-            <h1>Welcome, {{ session_user.display_name }}!</h1>
+            <h1>Welcome, {{ session_user_information[0].display_name }}!</h1>
             <br>
-            <img src="{{ session_user.images[0].url }}">
+            <img src="{{ session_user_information[0].images[0].url }}">
         </div>
         <br>
         <div>
@@ -19,5 +19,60 @@
         <div>
             {{ total_users }} online.
         </div>
+
+
+        <button id="togglePlay">Toggle Play</button>
+
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+    <script>
+        // Note: user needs spotify premium
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = '{{ session_user_information[1].get_access_token() }}';
+            const player = new Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => {
+                    cb(token);
+                },
+                volume: 0.5
+            });
+
+            // Ready
+            player.addListener('ready', ({device_id}) => {
+                console.log('Ready with Device ID', device_id);
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({device_id}) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            player.addListener('initialization_error', ({message}) => {
+                console.error(message);
+            });
+
+            player.addListener('authentication_error', ({message}) => {
+                console.log("AUTHENTICATION ERROR")
+                console.error(message); // invalid token scopes
+                console.log("----------------")
+            });
+
+            player.addListener('account_error', ({message}) => {
+                console.log("here")
+                console.error(message); // This functionality is restricted to premium users only
+                console.log("----------------")
+            });
+
+            document.getElementById('togglePlay').onclick = function () {
+                player.togglePlay();
+                console.log('toggled')
+            };
+
+            player.connect();
+        }
+    </script>
 {% endblock %}

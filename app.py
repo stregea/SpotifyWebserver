@@ -37,14 +37,14 @@ def index():  # put application's code here
 
         return render_template(
             'index.html',
-            session_user=SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']][0],
+            session_user_information=SPOTIFY_USERS[json.loads(flask.session['current_user'])['id']],
             user_json=json.loads(flask.session['current_user']),
             total_users=len(SPOTIFY_USERS)
         )
     except KeyError:
         # If not, take user to sign-in page to get access to a code that will be used to request an access token.
         response_type = 'code'
-        scope = 'user-read-email%20user-read-private'
+        scope = 'streaming%20user-read-email%20user-read-private'
         state = '123'  # make random later
 
         redirect_uri = f'{spotify_url_authorize}client_id={client_id}&redirect_uri={encoded_redirect}&scope={scope}&response_type={response_type}&state={state}'
@@ -78,6 +78,7 @@ def callback_for_login():
         return redirect('/')
     elif error:
         # redirect to a sorry page?
+        print("User hit 'cancel' for user access.")
         pass
     elif authorize:
         # get and set access token for the current session user
