@@ -4,7 +4,6 @@ from objects.spotify.spotify_external_ids import SpotifyExternalIDs
 from objects.spotify.spotify_external_urls import SpotifyExternalURLs
 from objects.spotify.spotify_restrictions import SpotifyRestrictions
 
-
 class SpotifyTrack:
     """
     Class to represent a spotify track.
@@ -28,7 +27,7 @@ class SpotifyTrack:
         self.artists: [SpotifyArtist] = [SpotifyArtist(artist) for artist in json_response['artists']] if 'artists' in json_response else None
 
         # A list of the countries in which the track can be played, identified by their ISO 3166-1 alpha-2 code.
-        self.available_markets: [str] = json_response['available_markets'] if 'available_markets' in json_response else None
+        self.available_markets: [str] = json_response['available_markets'] if 'available_markets' in json_response else []
 
         # The disc number (usually 1 unless the album consists of more than one disc).
         self.disc_number: int = json_response['disc_number'] if 'disc_number' in json_response else -1
