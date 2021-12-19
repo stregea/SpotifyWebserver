@@ -89,6 +89,4 @@ def callback_for_login():
 
 if __name__ == '__main__':
     context = (os.path.abspath(SERVER_INFORMATION['ssl_cert']), os.path.abspath(SERVER_INFORMATION['ssl_key']))
-    # app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'], ssl_context=context)
-    app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'])
-
+    app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'], ssl_context=context)
