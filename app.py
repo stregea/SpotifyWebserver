@@ -4,22 +4,25 @@ import flask
 from flask import Flask, redirect, render_template, request
 import os
 import json
-from objects.spotify.spotify_user import SpotifyUser
-from objects.spotify.spotify_current_user import SpotifyCurrentUser, get_current_user
-from objects.spotify.spotify_authorization_token import create_authorization_token, SpotifyAuthorizationToken
+from src.objects.spotify.spotify_user import SpotifyUser
+from src.objects.spotify.spotify_current_user import SpotifyCurrentUser, get_current_user
+from src.objects.spotify.spotify_authorization_token import create_authorization_token, SpotifyAuthorizationToken
+import urllib.parse
+import sys
 
-# load in the client id and secret id.
-CLIENT_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
+# load in the server information.
+SERVER_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 SPOTIFY_USERS: dict[str: [SpotifyUser, SpotifyAuthorizationToken]] = {}
 
-client_id = CLIENT_INFORMATION['client_id']
-client_secret = CLIENT_INFORMATION['client_secret']
+client_id = SERVER_INFORMATION['client_id']
+client_secret = SERVER_INFORMATION['client_secret']
+
 spotify_url_authorize = 'https://accounts.spotify.com/authorize/?'
-encoded_redirect = 'http%3A%2F%2Flocalhost%3A5000%2Fcallback%2F'
+encoded_redirect = urllib.parse.quote(f"https://{SERVER_INFORMATION['host']}:{SERVER_INFORMATION['port']}/callback/")
 
 
 @app.route('/')
@@ -88,4 +91,5 @@ def callback_for_login():
 
 
 if __name__ == '__main__':
-    app.run()
+    context = (SERVER_INFORMATION['ssl_cert'], SERVER_INFORMATION['ssl_key'])
+    app.run(host=SERVER_INFORMATION['host'], port=SERVER_INFORMATION['port'], debug=False, ssl_context=context)

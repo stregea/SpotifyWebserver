@@ -1,9 +1,14 @@
 import base64
 import time
 import requests
+import json
+import os
+
+# load in the server information.
+SERVER_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
 
 TOKEN_URI = 'https://accounts.spotify.com/api/token'
-REDIRECT_URI = 'http://localhost:5000/callback/'
+REDIRECT_URI = f'https://{SERVER_INFORMATION["host"]}:{SERVER_INFORMATION["port"]}/callback/'
 
 
 class SpotifyAuthorizationToken:
