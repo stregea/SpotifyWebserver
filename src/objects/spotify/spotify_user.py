@@ -1,8 +1,8 @@
 import json
 
-from objects.spotify.spotify_external_urls import SpotifyExternalURLs
-from objects.spotify.spotify_followers import SpotifyFollowers
-from objects.spotify.spotify_image import SpotifyImage
+from src.objects.spotify.spotify_external_urls import SpotifyExternalURLs
+from src.objects.spotify.spotify_followers import SpotifyFollowers
+from src.objects.spotify.spotify_image import SpotifyImage
 
 
 class SpotifyUser:

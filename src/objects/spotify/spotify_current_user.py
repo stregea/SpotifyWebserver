@@ -1,9 +1,7 @@
-import json
-
 import requests
-from objects.spotify.spotify_authorization_token import SpotifyAuthorizationToken
-from objects.spotify.spotify_explicit_content import SpotifyExplicitContent
-from objects.spotify.spotify_user import SpotifyUser
+from src.objects.spotify.spotify_authorization_token import SpotifyAuthorizationToken
+from src.objects.spotify.spotify_explicit_content import SpotifyExplicitContent
+from src.objects.spotify.spotify_user import SpotifyUser
 
 
 class SpotifyCurrentUser(SpotifyUser):
