@@ -1,5 +1,3 @@
-import base64
-
 import flask
 from flask import Flask, redirect, render_template, request
 import os
@@ -8,7 +6,6 @@ from src.objects.spotify.spotify_user import SpotifyUser
 from src.objects.spotify.spotify_current_user import SpotifyCurrentUser, get_current_user
 from src.objects.spotify.spotify_authorization_token import create_authorization_token, SpotifyAuthorizationToken
 import urllib.parse
-import sys
 
 # load in the server information.
 SERVER_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
@@ -66,16 +63,16 @@ def callback_for_login():
 
     if code:
         # Create access token.
-        token = create_authorization_token(code, client_id, client_secret)
+        token: SpotifyAuthorizationToken = create_authorization_token(code, client_id, client_secret)
 
         # Create the current user.
-        current_user = get_current_user(token, client_id, client_secret)
+        current_user: SpotifyCurrentUser = get_current_user(token, client_id, client_secret)
 
         # Set the current user as the session user
         flask.session['current_user'] = current_user.to_json()
 
         # Add user to the current dictionary of users.
-        SPOTIFY_USERS[current_user.id] = [current_user, token]
+        SPOTIFY_USERS[current_user.id]: [SpotifyCurrentUser, SpotifyAuthorizationToken] = [current_user, token]
 
         # redirect user to home page.
         return redirect('/')
@@ -91,5 +88,5 @@ def callback_for_login():
 
 
 if __name__ == '__main__':
-    context = (SERVER_INFORMATION['ssl_cert'], SERVER_INFORMATION['ssl_key'])
-    app.run(host=SERVER_INFORMATION['host'], port=SERVER_INFORMATION['port'], debug=False, ssl_context=context)
+    context = (os.path.abspath(SERVER_INFORMATION['ssl_cert']), os.path.abspath(SERVER_INFORMATION['ssl_key']))
+    app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'], ssl_context=context)
