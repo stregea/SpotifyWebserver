@@ -19,7 +19,7 @@ client_id = SERVER_INFORMATION['client_id']
 client_secret = SERVER_INFORMATION['client_secret']
 
 spotify_url_authorize = 'https://accounts.spotify.com/authorize/?'
-encoded_redirect = urllib.parse.quote(f"https://{SERVER_INFORMATION['host']}:{SERVER_INFORMATION['port']}/callback/")
+encoded_redirect = urllib.parse.quote(f"{SERVER_INFORMATION['http']}://{SERVER_INFORMATION['host']}:{SERVER_INFORMATION['port']}/callback/")
 
 
 @app.route('/')
@@ -89,4 +89,6 @@ def callback_for_login():
 
 if __name__ == '__main__':
     context = (os.path.abspath(SERVER_INFORMATION['ssl_cert']), os.path.abspath(SERVER_INFORMATION['ssl_key']))
-    app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'], ssl_context=context)
+    # app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'], ssl_context=context)
+    app.run(host="0.0.0.0", port=SERVER_INFORMATION['port'])
+

@@ -8,7 +8,7 @@ import os
 SERVER_INFORMATION = json.loads(open(os.path.abspath('data/json/spotify_credentials.json'), 'r').read())
 
 TOKEN_URI = 'https://accounts.spotify.com/api/token'
-REDIRECT_URI = f'https://{SERVER_INFORMATION["host"]}:{SERVER_INFORMATION["port"]}/callback/'
+REDIRECT_URI = f'{SERVER_INFORMATION["http"]}://{SERVER_INFORMATION["host"]}:{SERVER_INFORMATION["port"]}/callback/'
 
 
 class SpotifyAuthorizationToken:
